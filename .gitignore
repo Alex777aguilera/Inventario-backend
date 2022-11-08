@@ -1,0 +1,7 @@
+.vs/
+
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+
+/Api_clinica/appsettings.json
