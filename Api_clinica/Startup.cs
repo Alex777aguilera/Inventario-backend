@@ -50,7 +50,7 @@ namespace Api_clinica
         {
             app.UseCors(options =>
             {
-                options.WithOrigins("http://localhost:3000");
+                options.WithOrigins("http://localhost:3000", "http://192.168.5.1:3000");
                 options.AllowAnyMethod();
                 options.AllowAnyHeader();
             });
