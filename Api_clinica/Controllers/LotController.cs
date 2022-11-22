@@ -1,32 +1,34 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Api_clinica.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using System.Data.SqlClient;
-using System.Data;
-using Api_clinica.Models;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Api_clinica.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class IncapacidadesController : ControllerBase
+    public class LotController : ControllerBase
     {
-
         private readonly IConfiguration _condiguration;
 
-        public IncapacidadesController(IConfiguration configuration)
+        public LotController(IConfiguration configuration)
         {
             _condiguration = configuration;
         }
 
+
+        // GET: api/<LotController>
         [HttpGet]
         public JsonResult Get()
         {
-            string query = @"exec Get_API_Incapacidades";
+            string query = @"exec Get_API_Lot";
             DataTable table = new DataTable();
             string sqlDataSource = _condiguration.GetConnectionString("connect");
             SqlDataReader myReader;
@@ -41,7 +43,6 @@ namespace Api_clinica.Controllers
                     myCon.Close();
                 }
             }
-
             if (table.Rows.Count > 0)
             {
                 return new JsonResult(table);
@@ -50,23 +51,20 @@ namespace Api_clinica.Controllers
             {
                 return new JsonResult("Not Data");
             }
-
         }
 
+        
+
         [HttpPost]
-        public JsonResult Post(Incapacidades inc )
+        public JsonResult Post(Lot inc)
         {
             string query = @"
-                                EXEC POST_API_Patient_incapacity 
-                                @cod_employed = '" + inc.cod_employed + @"',
-                                @days = '" + inc.days + @"',   
-                                @condition = '" + inc.condition + @"', 
-                                @diagnostic = '" + inc.diagnostic + @"', 
-                                @user_register = '" + inc.user_register + @"'
+                              EXEC Post_API_Lot 
+                              @cod_lot = '" + inc.cod_lot + @"'
                            ";
 
             DataTable table = new DataTable();
-            
+
             string sqlDataSource = _condiguration.GetConnectionString("connect");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
@@ -83,6 +81,7 @@ namespace Api_clinica.Controllers
             return new JsonResult("Added Successfully!!");
 
         }
+
 
     }
 }

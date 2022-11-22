@@ -1,32 +1,36 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Api_clinica.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using System.Data.SqlClient;
-using System.Data;
-using Api_clinica.Models;
+
+
 
 namespace Api_clinica.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class IncapacidadesController : ControllerBase
+    public class Tipo_ProductoController : ControllerBase
     {
-
         private readonly IConfiguration _condiguration;
 
-        public IncapacidadesController(IConfiguration configuration)
+        public Tipo_ProductoController(IConfiguration configuration)
         {
             _condiguration = configuration;
         }
 
+
+
+        // GET: api/<Tipo_ProductoController>
         [HttpGet]
         public JsonResult Get()
         {
-            string query = @"exec Get_API_Incapacidades";
+            string query = @"
+                          exec Get_API_Type_product";
             DataTable table = new DataTable();
             string sqlDataSource = _condiguration.GetConnectionString("connect");
             SqlDataReader myReader;
@@ -41,7 +45,6 @@ namespace Api_clinica.Controllers
                     myCon.Close();
                 }
             }
-
             if (table.Rows.Count > 0)
             {
                 return new JsonResult(table);
@@ -50,23 +53,21 @@ namespace Api_clinica.Controllers
             {
                 return new JsonResult("Not Data");
             }
-
         }
 
+       
+        // POST api/<Tipo_ProductoController>
         [HttpPost]
-        public JsonResult Post(Incapacidades inc )
+        public JsonResult Post(Tipo_Producto inc)
         {
             string query = @"
-                                EXEC POST_API_Patient_incapacity 
-                                @cod_employed = '" + inc.cod_employed + @"',
-                                @days = '" + inc.days + @"',   
-                                @condition = '" + inc.condition + @"', 
-                                @diagnostic = '" + inc.diagnostic + @"', 
-                                @user_register = '" + inc.user_register + @"'
+                              exec POST_API_Type_product
+                              @description_typeP = '" + inc.description_typeP + @"', 
+                              @unid_med = '" + inc.unid_med + @"'
                            ";
 
             DataTable table = new DataTable();
-            
+
             string sqlDataSource = _condiguration.GetConnectionString("connect");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
@@ -84,5 +85,12 @@ namespace Api_clinica.Controllers
 
         }
 
+        // PUT api/<Tipo_ProductoController>/5
+       // [HttpPut("{id}")]
+        //public void Put(int id, [FromBody] string value)
+        //{
+        //}
+
+        
     }
 }

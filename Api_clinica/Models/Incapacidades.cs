@@ -8,9 +8,7 @@ namespace Api_clinica.Models
     public class Incapacidades
     {
         public int id { get; set; }
-        public int cod_area {get; set;}
         public string cod_employed { get; set; }
-        public string names { get; set;  }
         public string days { get; set; }
         public string condition { get; set; }
         public string diagnostic { get; set; }
