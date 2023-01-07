@@ -9,8 +9,8 @@ namespace Api_clinica.Models
 {
     public class Almacen
     {
-        public int Cod_store { get; set; }
-        public string deatil_store { get; set; }
+        public int cod_store { get; set; }
+        public string detail_store { get; set; }
         public int cod_enterprise { get; set; }
 
     }

@@ -1,4 +1,5 @@
 ﻿using Api_clinica.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -8,65 +9,31 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace Api_clinica.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Tipo_MovimientoController : ControllerBase
+    public class HeaderKardexController : ControllerBase
     {
         private readonly IConfiguration _condiguration;
 
-        public Tipo_MovimientoController(IConfiguration configuration)
+        public HeaderKardexController(IConfiguration configuration)
         {
             _condiguration = configuration;
         }
 
-        // GET: api/<Tipo_MovimientoController>
-        [HttpGet]
-        public JsonResult Get()
-        {
-            string query = @"
-                          exec Get_API_Type_move";
-            DataTable table = new DataTable();
-            string sqlDataSource = _condiguration.GetConnectionString("connect");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-            if (table.Rows.Count > 0)
-            {
-                return new JsonResult(table);
-            }
-            else
-            {
-                return new JsonResult("Not Data");
-            }
-        }
-
-        // GET api/<Tipo_ProductoController>/5
-        [HttpGet("{id}")]
-        public JsonResult Get(int id)
-        {
-            return new JsonResult(id);
-        }
-
         [HttpPost]
-        public JsonResult Post(Tipo_Movimiento inc)
+        public JsonResult Post(Header_Kardex inc)
         {
             string query = @"
-                              EXEC Post_API_Type_move 
-                              @detail = '" + inc.detail + @"',
-                              @option_move = '" + inc.option_move + @"'
+                              EXEC POST_API_Header_kardex 
+                              @type_move = '" + inc.type_move + @"',
+                              @n_trazability = '" + inc.n_trazability + @"',
+                              @origin_product = '" + inc.origin_product + @"',
+                              @reference = '" + inc.reference + @"',
+                              @date_tranzaction = '" + inc.date_tranzaction + @"',
+                              @user_register = '" + inc.user_register + @"',
+                              @id_enterprise = '" + inc.id_enterprise + @"'
                            ";
 
             DataTable table = new DataTable();
@@ -84,9 +51,41 @@ namespace Api_clinica.Controllers
                     myCon.Close();
                 }
             }
-            return new JsonResult("Added Successfully!!");
+            return new JsonResult(table);
 
         }
+
+
+        [HttpGet("{enterprise}")]
+        public JsonResult Get(int enterprise)
+        {
+            string query = @"exec Correlative_Kardex_Header @id_enterprise = '" + enterprise + @"' ";
+            DataTable table = new DataTable();
+            string sqlDataSource = _condiguration.GetConnectionString("connect");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+
+            if (table.Rows.Count > 0)
+            {
+                return new JsonResult(table);
+            }
+            else
+            {
+                return new JsonResult("Not Data");
+            }
+
+        }
+
 
     }
 }

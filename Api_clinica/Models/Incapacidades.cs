@@ -11,8 +11,15 @@ namespace Api_clinica.Models
         public string cod_employed { get; set; }
         public string days { get; set; }
         public string condition { get; set; }
+        public int status_p { get; set; }
+        public DateTime date_from { get; set; }
+        public DateTime date_to { get; set; }
+        public string time_p { get; set; }
+        public int days_p { get; set; }
         public string diagnostic { get; set; }
-        public DateTime creation { get; set; }
+        public DateTime creation_date { get; set; }
+        public string n_tranzability { get; set; }
         public string user_register { get; set; }
+
     }
 }

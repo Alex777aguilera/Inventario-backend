@@ -9,6 +9,9 @@ namespace Api_clinica.Models
     {
         public int correlative { get; set; }
         public string cod_lot { get; set; }
+        public DateTime date_exp { get; set; }
+        public int cod_enterprise { get; set; }
+        public string user_register { get; set; }
         public DateTime date_create { get; set; }
     }
 }

@@ -23,11 +23,11 @@ namespace Api_clinica.Controllers
 
 
         // GET: api/<AlmacenController>
-        [HttpGet]
-        public JsonResult Get()
+        [HttpGet("{enterprise}")]
+        public JsonResult Get(int enterprise)
         {
             string query = @"
-                            EXEC Get_API_Store  
+                            EXEC Get_API_Store  @id_enterprise  = '" + enterprise + @"'
                             ";
             DataTable table = new DataTable();
             string sqlDataSource = _condiguration.GetConnectionString("connect");
@@ -53,7 +53,7 @@ namespace Api_clinica.Controllers
             }
         }
 
-        
+
 
         // POST api/<AlmacenController>
         [HttpPost]
@@ -61,7 +61,7 @@ namespace Api_clinica.Controllers
         {
             string query = @"
                              EXEC POST_API_Store 
-                             @deatil_store = '" + inc.deatil_store + @"', 
+                             @detail_store = '" + inc.detail_store + @"', 
                              @cod_enterprise = '" + inc.cod_enterprise + @"'
                            ";
 
@@ -83,12 +83,10 @@ namespace Api_clinica.Controllers
             return new JsonResult("Added Successfully!!");
         }
 
-        // PUT api/<AlmacenController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
 
         
+
+
+
     }
 }

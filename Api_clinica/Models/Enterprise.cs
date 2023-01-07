@@ -7,8 +7,8 @@ namespace Api_clinica.Models
 {
     public class Enterprise
     {
-        public int  cod_enterprise { get; set; }
-        public string detail_enterprise { get; set; }
-        public string abbreviation { get; set; }
+        public int  cia_codigo { get; set; }
+        public string cia_descripcion { get; set; }
+        public string cia_abreviatura { get; set; }
     }
 }
