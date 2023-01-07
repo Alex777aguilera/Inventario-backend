@@ -1,33 +1,34 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using System.Data.SqlClient;
-using System.Data;
-using Api_clinica.Models;
+
 
 namespace Api_clinica.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class KardexController : ControllerBase
+    public class EmpleadosController : ControllerBase
     {
+
         private readonly IConfiguration _condiguration;
 
-        public KardexController(IConfiguration configuration)
+        public EmpleadosController(IConfiguration configuration)
         {
             _condiguration = configuration;
         }
 
-        // GET: api/<KardexController>
+        // GET: api/<EmpleadosController>
         [HttpGet("{enterprise}")]
         public JsonResult Get(int enterprise)
         {
             string query = @"
-                          exec Get_API_kardex @id_enterprise = '" + enterprise + @"' ";
+                                EXEC Get_API_Employed @id_enterprise = '" + enterprise + @"'
+                            ";
             DataTable table = new DataTable();
             string sqlDataSource = _condiguration.GetConnectionString("connect");
             SqlDataReader myReader;
@@ -42,6 +43,7 @@ namespace Api_clinica.Controllers
                     myCon.Close();
                 }
             }
+
             if (table.Rows.Count > 0)
             {
                 return new JsonResult(table);
@@ -50,7 +52,8 @@ namespace Api_clinica.Controllers
             {
                 return new JsonResult("Not Data");
             }
-
         }
+
+
     }
 }

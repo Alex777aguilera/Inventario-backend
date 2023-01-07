@@ -17,5 +17,6 @@ namespace Api_clinica.Models
         public DateTime last_login { get; set; }
         public Boolean active { get; set; }
         public int user_type { get; set; }
+        public string cod_employed { get; set; }
     }
 }

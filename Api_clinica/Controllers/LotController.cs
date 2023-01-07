@@ -8,7 +8,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Api_clinica.Controllers
 {
@@ -25,10 +24,10 @@ namespace Api_clinica.Controllers
 
 
         // GET: api/<LotController>
-        [HttpGet]
-        public JsonResult Get()
+        [HttpGet("{enterprise}")]
+        public JsonResult Get(int enterprise)
         {
-            string query = @"exec Get_API_Lot";
+            string query = @"exec Get_API_Lot @id_enterprise = '" + enterprise + @"'";
             DataTable table = new DataTable();
             string sqlDataSource = _condiguration.GetConnectionString("connect");
             SqlDataReader myReader;
@@ -55,12 +54,15 @@ namespace Api_clinica.Controllers
 
         
 
-        [HttpPost]
-        public JsonResult Post(Lot inc)
+        [HttpPost("{enterprise}")]
+        public JsonResult Post(Lot inc, int enterprise)
         {
             string query = @"
                               EXEC Post_API_Lot 
-                              @cod_lot = '" + inc.cod_lot + @"'
+                              @cod_lot = '" + inc.cod_lot + @"',
+                              @date_exp = '" + inc.date_exp + @"',
+                              @cod_enterprise = '" + enterprise + @"',
+                              @user_register = '" + inc.user_register + @"'
                            ";
 
             DataTable table = new DataTable();

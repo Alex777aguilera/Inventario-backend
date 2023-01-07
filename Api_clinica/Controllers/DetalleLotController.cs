@@ -8,27 +8,27 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Api_clinica.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Tipo_MovimientoController : ControllerBase
+    public class DetalleLotController : ControllerBase
     {
         private readonly IConfiguration _condiguration;
 
-        public Tipo_MovimientoController(IConfiguration configuration)
+        public DetalleLotController(IConfiguration configuration)
         {
             _condiguration = configuration;
         }
 
-        // GET: api/<Tipo_MovimientoController>
-        [HttpGet]
-        public JsonResult Get()
+        
+
+        // GET api/<DetalleLotController>
+        [HttpGet("{enterprise}")]
+        public JsonResult Get(int enterprise)
         {
-            string query = @"
-                          exec Get_API_Type_move";
+            string query = @"EXEC Get_API_Detail_lot @id_enterprise = '"+ enterprise +@"' ";
             DataTable table = new DataTable();
             string sqlDataSource = _condiguration.GetConnectionString("connect");
             SqlDataReader myReader;
@@ -43,6 +43,7 @@ namespace Api_clinica.Controllers
                     myCon.Close();
                 }
             }
+
             if (table.Rows.Count > 0)
             {
                 return new JsonResult(table);
@@ -51,24 +52,18 @@ namespace Api_clinica.Controllers
             {
                 return new JsonResult("Not Data");
             }
+
         }
 
-        // GET api/<Tipo_ProductoController>/5
-        [HttpGet("{id}")]
-        public JsonResult Get(int id)
-        {
-            return new JsonResult(id);
-        }
-
+        // POST api/<DetalleLotController>
         [HttpPost]
-        public JsonResult Post(Tipo_Movimiento inc)
+        public JsonResult Post(DetalleLote inc)
         {
             string query = @"
-                              EXEC Post_API_Type_move 
-                              @detail = '" + inc.detail + @"',
-                              @option_move = '" + inc.option_move + @"'
-                           ";
-
+                             EXEC POST_API_Detail_lot 
+                             @cod_lot = '" + inc.cod_lot + @"',
+                             @cod_prod = '" + inc.cod_prod + @"'
+                            ";
             DataTable table = new DataTable();
 
             string sqlDataSource = _condiguration.GetConnectionString("connect");
