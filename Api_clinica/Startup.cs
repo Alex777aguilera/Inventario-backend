@@ -42,7 +42,7 @@ namespace Api_clinica
                 = new DefaultContractResolver());
 
             services.AddControllers();
-            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("connect")));
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Seguridad_CadenaConexion")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,7 +50,21 @@ namespace Api_clinica
         {
             app.UseCors(options =>
             {
-                options.WithOrigins("http://localhost:3000", "http://192.168.5.1:3000");
+                options.WithOrigins(
+                                    "http://localhost:3000", 
+                                    "http://192.168.5.1:3000",
+                                    "http://localhost:87",
+                                    "http://200.0.0.252:87",
+                                    "http://200.0.0.252:5001",
+                                    "http://200.0.0.32:87",
+                                    "http://200.0.0.32:3001",
+                                    "http://apclin.seajoy.local",
+                                    "http://apclin.seajoy.local:5001",
+                                    "http://apclin.seajoy.local:3001",
+                                    "http://apclin.seajoy.com",
+                                    "http://apclin.seajoy.com:5001",
+                                    "http://apclin.seajoy.com:80"
+                                    );
                 options.AllowAnyMethod();
                 options.AllowAnyHeader();
             });
