@@ -14,8 +14,9 @@ namespace Api_clinica.Models
         public int status_p { get; set; }
         public DateTime date_from { get; set; }
         public DateTime date_to { get; set; }
-        public string time_p { get; set; }
-        public int days_p { get; set; }
+        public string date_p { get; set; }
+        public string days_p { get; set; }
+        public string type_date { get; set; }
         public string diagnostic { get; set; }
         public DateTime creation_date { get; set; }
         public string n_tranzability { get; set; }
